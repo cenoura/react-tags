@@ -35,7 +35,7 @@ Check it out [here](https://stackblitz.com/edit/react-tag-input-1nelrc)
 The preferred way of using the component is via NPM
 
 ```
-npm install --save react-tag-input
+npm install --save react-tag-custom
 ```
 It is, however, also available to be used separately (`dist/ReactTags.min.js`). If you prefer this method remember to include [ReactDND](https://github.com/gaearon/react-dnd) as a dependancy. Refer to the [example](https://stackblitz.com/edit/react-tag-input) to see how this works.
 
@@ -47,7 +47,7 @@ Here's a sample implementation that initializes the component with a list of ini
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { WithContext as ReactTags } from 'react-tag-input';
+import { WithContext as ReactTags } from 'react-tag-custom';
 
 const KeyCodes = {
   comma: 188,
@@ -123,7 +123,7 @@ ReactDOM.render(<App />, document.getElementById('app'));
 One of the dependencies of this component is the [react-dnd](https://github.com/gaearon/react-dnd) library. Since the 1.0 version, the original author has changed the API and requires the application using any draggable components to have a top-level [backend](http://gaearon.github.io/react-dnd/docs-html5-backend.html) context. So if you're using this component in an existing Application that uses React-DND you will already have a backend defined, in which case, you should `require` the component *without* the context.
 
 ```javascript
-const ReactTags = require('react-tag-input').WithOutContext;
+const ReactTags = require('react-tag-custom').WithOutContext;
 ```
 Otherwise, you can simply import along with the backend itself (as shown above). If you have ideas to make this API better, I'd [love to hear](https://github.com/prakhar1989/react-tags/issues/new).
 

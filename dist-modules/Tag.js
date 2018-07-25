@@ -10,17 +10,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDnd = require('react-dnd');
-
 var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _flow = require('lodash/flow');
-
-var _flow2 = _interopRequireDefault(_flow);
-
-var _DragAndDropHelper = require('./DragAndDropHelper');
 
 var _RemoveComponent = require('./RemoveComponent');
 
@@ -51,16 +43,12 @@ var Tag = function (_Component) {
       var props = this.props;
 
       var label = props.tag[props.labelField];
-      var connectDragSource = props.connectDragSource,
-          isDragging = props.isDragging,
-          connectDropTarget = props.connectDropTarget,
-          readOnly = props.readOnly;
+      var readOnly = props.readOnly;
 
 
       var tagComponent = _react2.default.createElement(
         'span',
         {
-          style: { opacity: isDragging ? 0 : 1 },
           className: props.classNames.tag,
           onClick: props.onTagClicked,
           onKeyDown: props.onTagClicked },
@@ -73,7 +61,7 @@ var Tag = function (_Component) {
           readOnly: readOnly
         })
       );
-      return connectDragSource(connectDropTarget(tagComponent));
+      return tagComponent;
     }
   }]);
 
@@ -99,4 +87,4 @@ Tag.defaultProps = {
   readOnly: false
 };
 
-exports.default = (0, _flow2.default)((0, _reactDnd.DragSource)(ItemTypes.TAG, _DragAndDropHelper.tagSource, _DragAndDropHelper.dragSource), (0, _reactDnd.DropTarget)(ItemTypes.TAG, _DragAndDropHelper.tagTarget, _DragAndDropHelper.dropCollect))(Tag);
+exports.default = Tag;

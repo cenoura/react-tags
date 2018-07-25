@@ -16,7 +16,6 @@
   },
   "keywords": [
     "react",
-    "drag-drop",
     "tags",
     "tag input",
     "react-component",
@@ -24,7 +23,7 @@
   ],
   "author": "Prakhar Srivastav",
   "license": "MIT",
-  "repository": "https://github.com/prakhar1989/react-tags",
+  "repository": "https://github.com/wharley/react-tags",
   "jest": {
     "setupFiles": [
       "raf/polyfill",

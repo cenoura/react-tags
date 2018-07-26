@@ -8,12 +8,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDnd = require('react-dnd');
-
-var _reactDndHtml5Backend = require('react-dnd-html5-backend');
-
-var _reactDndHtml5Backend2 = _interopRequireDefault(_reactDndHtml5Backend);
-
 var _noop = require('lodash/noop');
 
 var _noop2 = _interopRequireDefault(_noop);
@@ -480,7 +474,6 @@ ReactTags.defaultProps = {
 
 
 module.exports = {
-  WithContext: (0, _reactDnd.DragDropContext)(_reactDndHtml5Backend2.default)(ReactTags),
   WithOutContext: ReactTags,
   KEYS: _constants.KEYS
 };

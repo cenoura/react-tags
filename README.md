@@ -3,7 +3,6 @@ React Tag Custom
 
 [![MIT](https://img.shields.io/npm/l/react-tag-input.svg?style=flat-square)](https://github.com/wharley/react-tags/blob/master/LICENSE)
 [![NPM Version](https://img.shields.io/npm/v/react-tag-input.svg?style=flat-square)](https://www.npmjs.com/package/react-tag-custom)
-[![npm downloads](https://img.shields.io/npm/dm/react-tag-input.svg?style=flat-square)]
 
 React Tag Custom is a simple tagging component ready to drop in your React projects. Orininally based on The [React Tags project](http://prakhar.me/react-tags/example) by Prakhar Srivastav this version removes the drag-and-drop functionality.
 

@@ -3,12 +3,11 @@ React-Tags
 
 [![MIT](https://img.shields.io/npm/l/react-tag-input.svg?style=flat-square)](https://github.com/prakhar1989/react-tags/blob/master/LICENSE)
 [![NPM Version](https://img.shields.io/npm/v/react-tag-input.svg?style=flat-square)](https://www.npmjs.com/package/react-tag-input)
-[![Dependency Status](https://david-dm.org/yahoo/react-dnd-touch-backend.svg)](https://david-dm.org/yahoo/react-dnd-touch-backend)
-[![devDependency Status](https://david-dm.org/yahoo/react-dnd-touch-backend/dev-status.svg)](https://david-dm.org/yahoo/react-dnd-touch-backend#info=devDependencies)
 [![npm downloads](https://img.shields.io/npm/dm/react-tag-input.svg?style=flat-square)](https://www.npmjs.com/package/react-tag-input)
 [![build status](https://img.shields.io/travis/prakhar1989/react-tags.svg?style=flat-square)](https://travis-ci.org/prakhar1989/react-tags)
 [![Greenkeeper badge](https://badges.greenkeeper.io/prakhar1989/react-tags.svg)](https://greenkeeper.io/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
 <a href="https://codeclimate.com/github/prakhar1989/react-tags/maintainability"><img src="https://api.codeclimate.com/v1/badges/b9edb2810b02bb845d20/maintainability" /></a>
 <a href="https://codeclimate.com/github/prakhar1989/react-tags/test_coverage"><img src="https://api.codeclimate.com/v1/badges/b9edb2810b02bb845d20/test_coverage" /></a>
 
@@ -35,7 +34,7 @@ Check it out [here](https://stackblitz.com/edit/react-tag-input-1nelrc)
 The preferred way of using the component is via NPM
 
 ```
-npm install --save react-tag-custom
+npm install --save react-tag-input
 ```
 It is, however, also available to be used separately (`dist/ReactTags.min.js`). If you prefer this method remember to include [ReactDND](https://github.com/gaearon/react-dnd) as a dependancy. Refer to the [example](https://stackblitz.com/edit/react-tag-input) to see how this works.
 
@@ -47,7 +46,7 @@ Here's a sample implementation that initializes the component with a list of ini
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { WithContext as ReactTags } from 'react-tag-custom';
+import { WithContext as ReactTags } from 'react-tag-input';
 
 const KeyCodes = {
   comma: 188,
@@ -123,94 +122,87 @@ ReactDOM.render(<App />, document.getElementById('app'));
 One of the dependencies of this component is the [react-dnd](https://github.com/gaearon/react-dnd) library. Since the 1.0 version, the original author has changed the API and requires the application using any draggable components to have a top-level [backend](http://gaearon.github.io/react-dnd/docs-html5-backend.html) context. So if you're using this component in an existing Application that uses React-DND you will already have a backend defined, in which case, you should `require` the component *without* the context.
 
 ```javascript
-const ReactTags = require('react-tag-custom').WithOutContext;
+const ReactTags = require('react-tag-input').WithOutContext;
 ```
 Otherwise, you can simply import along with the backend itself (as shown above). If you have ideas to make this API better, I'd [love to hear](https://github.com/prakhar1989/react-tags/issues/new).
 
 <a name="Options"></a>
 ### Options
 
-Option | Type | Default | Description
---- | --- | --- | ---
-|[`tags`](#tagsOption) | `Array` | `[]` | An array of tags that are displayed as pre-selected
-|[`suggestions`](#suggestionsOption) | `Array` | `[]` | An array of suggestions that are used as basis for showing suggestions
-|[`delimiters`](#delimiters) | `Array` | `[ENTER, TAB]` | Specifies which characters should terminate tags input
-|[`placeholder`](#placeholderOption) | `String` | `Add new tag` | The placeholder shown for the input
-|[`labelField`](#labelFieldOption) | `String` | `text` | Provide an alternative `label` property for the tags
-|[`handleAddition`](#handleAdditionOption) | `Function` | `undefined` | Function called when the user wants to add a tag (required)
-|[`handleDelete`](#handleDeleteOption) | `Function` | `undefined` | Function called when the user wants to delete a tag (required)
-|[`handleDrag`](#handleDragOption) | `Function` | `undefined` | Function called when the user drags a tag
-|[`handleFilterSuggestions`](#handleFilterSuggestions) | `Function` | `undefined` | Function called when filtering suggestions
-|[`handleTagClick`](#handleTagClickOption) | `Function` | `undefined` | Function called when the user wants to know which tag was clicked
-|[`autofocus`](#autofocus) | `Boolean` | `true` | Boolean value to control whether the text-input should be autofocused on mount
-|[`allowDeleteFromEmptyInput`](#allowDeleteFromEmptyInput) | `Boolean` | `true` | Boolean value to control whether tags should be deleted when the 'Delete' key is pressed in an empty Input Box
-|[`handleInputChange`](#handleInputChange) | `Function` | `undefined` | Event handler for input onChange
-|[`handleInputFocus`](#handleInputFocus) | `Function` | `undefined` | Event handler for input onFocus
-|[`handleInputBlur`](#handleInputBlur) | `Function` | `undefined` | Event handler for input onBlur
-|[`minQueryLength`](#minQueryLength) | `Number` | `2` | How many characters are needed for suggestions to appear
-|[`removeComponent`](#removeComponent) | `Boolean` | `false` | Custom delete/remove tag element
-|[`autocomplete`](#autocomplete) | `Boolean`/`Number` | `false` | Ensure the first matching suggestion is automatically converted to a tag when a [delimiter](#delimiters) key is pressed
-|[`readOnly`](#readOnly) | `Boolean` | `false` | Read-only mode without the input box and `removeComponent` and drag-n-drop features disabled
-|[`name`](#nameOption) | `String` | `undefined` | The `name` attribute added to the input
-|[`id`](#idOption) | `String` | `undefined` | The `id` attribute added to the input
-|[`maxLength`](#maxLength) | `Number` | `Infinity` | The `maxLength` attribute added to the input
-|[`inline`](#inline) | `Boolean` | `true` | Render input field and selected tags in-line
+- [`tags`](#tagsOption)
+- [`suggestions`](#suggestionsOption)
+- [`delimiters`](#delimiters)
+- [`placeholder`](#placeholderOption)
+- [`labelField`](#labelFieldOption)
+- [`handleAddition`](#handleAdditionOption)
+- [`handleDelete`](#handleDeleteOption)
+- [`handleDrag`](#handleDragOption)
+- [`handleFilterSuggestions`](#handleFilterSuggestions)
+- [`handleTagClick`](#handleTagClickOption)
+- [`autofocus`](#autofocus)
+- [`allowDeleteFromEmptyInput`](#allowDeleteFromEmptyInput)
+- [`handleInputChange`](#handleInputChange)
+- [`handleInputFocus`](#handleInputFocus)
+- [`handleInputBlur`](#handleInputBlur)
+- [`minQueryLength`](#minQueryLength)
+- [`removeComponent`](#removeComponent)
+- [`autocomplete`](#autocomplete)
+- [`readOnly`](#readOnly)
+- [`name`](#nameOption)
+- [`id`](#idOption)
+- [`maxLength`](#maxLength)
+- [`inline`](#inline)
 
 <a name="tagsOption"></a>
-##### tags (optional, defaults to `[]`)
-An array of tags that are displayed as pre-selected. Each tag should have an `id` property and a property for the label, which is specified by the [`labelField`](#labelFieldOption).
+##### tags (optional)
+An array of tags that are displayed as pre-selected. Each tag should have an  `id` and `text` property which is used to display.
 
 ```js
-// With default labelField
 const tags =  [ { id: "1", text: "Apples" } ]
-
-// With labelField of `name`
-const tags =  [ { id: "1", name: "Apples" } ]
 ```
 
 <a name="suggestionsOption"></a>
-##### suggestions (optional, defaults to `[]`)
-An array of suggestions that are used as basis for showing suggestions. These objects should follow the same structure as the `tags`. So if the `labelField` is `name`, the following would work:
+##### suggestions (optional)
+An array of suggestions that are used as basis for showing suggestions. At the moment, this should be an array of strings.
 
 ```js
-// With labelField of `name`
 const suggestions = [
-    { id: "1", name: "mango" },
-    { id: "2", name: "pineapple" },
-    { id: "3", name: "orange" },
-    { id: "4", name: "pear" }
+    { id: "mango" text: "mango" },
+    { id: "pineapple", text: "pineapple" },
+    { id: "orange", text: "orange" },
+    { id: "pear", text: "pear" }
 ];
 ```
 
 <a name="delimiters"></a>
-##### delimiters (optional, defaults to `[ENTER, TAB]`)
-Specifies which characters should terminate tags input. An array of character codes.
+##### delimiters (optional)
+Specifies which characters should terminate tags input (default: enter and tab). An array of character codes.
 
-```js
+```
 const Keys = {
     TAB: 9,
     SPACE: 32,
     COMMA: 188,
 };
 <ReactTags
-    delimiters={[Keys.TAB, Keys.SPACE, Keys.COMMA]}
+    delimiters: [Keys.TAB, Keys.SPACE, Keys.COMMA]
  />
 ```
 
 
 <a name="placeholderOption"></a>
-##### placeholder (optional, defaults to `Add new tag`)
-The placeholder shown for the input.
+##### placeholder (optional)
+The placeholder shown for the input. Defaults to `Add new tag`.
 
-```js
+```
 let placeholder = "Add new country"
 ```
 
 <a name="labelFieldOption"></a>
-##### labelField (optional, defaults to `text`)
-Provide an alternative `label` property for the tags.
+##### labelField (optional)
+Provide an alternative `label` property for the tags. Defaults to `text`.
 
-```jsx
+```
 <ReactTags
     tags={tags}
     suggestions={}
@@ -218,7 +210,6 @@ Provide an alternative `label` property for the tags.
     handleDrag={}
  />
 ```
-
 This is useful if your data uses the `text` property for something else.
 
 
@@ -289,17 +280,17 @@ function(i) {
 ```
 
 <a name="autofocus"></a>
-##### autofocus (optional, defaults to `true`)
+##### autofocus (optional)
 Optional boolean param to control whether the text-input should be autofocused on mount.
 
-```jsx
+```js
 <ReactTags
     autofocus={false}
     ...>
 ```
 
 <a name="allowDeleteFromEmptyInput"></a>
-##### allowDeleteFromEmptyInput (optional, defaults to `true`)
+##### allowDeleteFromEmptyInput (optional)
 Optional boolean param to control whether tags should be deleted when the 'Delete' key is pressed in an empty Input Box.
 
 ```js
@@ -338,8 +329,8 @@ Optional event handler for input onBlur
 ```
 
 <a name="minQueryLength"></a>
-##### minQueryLength (optional, defaults to `2`)
-How many characters are needed for suggestions to appear.
+##### minQueryLength (optional)
+How many characters are needed for suggestions to appear (default: 2).
 
 <a name="removeComponent"></a>
 ##### removeComponent (optional)
@@ -368,7 +359,7 @@ class RemoveComponent extends React.Component {
 The "ReactTags__remove" className and `onClick` handler properties can be automatically included on the `<button>` by using the [JSX spread attribute](https://facebook.github.io/react/docs/jsx-spread.html), as illustrated above.
 
 <a name="autocomplete"></a>
-##### autocomplete (optional, defaults to `false`)
+##### autocomplete (optional)
 Useful for enhancing data entry workflows for your users by ensuring the first matching suggestion is automatically converted to a tag when a [delimiter](#delimiters) key is pressed (such as the enter key). This option has three possible values:
 
 - `true` - when delimeter key (such as enter) is pressed, first matching suggestion is used.
@@ -378,7 +369,7 @@ Useful for enhancing data entry workflows for your users by ensuring the first m
 This option has no effect if there are no [`suggestions`](#suggestionsOption).
 
 <a name="readOnly"></a>
-##### readOnly (optional, defaults to `false`)
+##### readOnly (optional)
 Renders the component in read-only mode without the input box and `removeComponent`. This also disables the drag-n-drop feature.
 
 <a name="nameOption"></a>
@@ -412,7 +403,7 @@ The maxLength attribute added to the input. Specifies the maximum number of char
 ```
 
 <a name="inline"></a>
-##### inline (optional, defaults to `true`)
+##### inline (optional)
 The inline attributes decides whether the input fields and selected tags will be rendered in-line.
 
 ```

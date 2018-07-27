@@ -8,13 +8,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _noop = require('lodash/noop');
+var _reactDnd = require('react-dnd');
 
-var _noop2 = _interopRequireDefault(_noop);
+var _reactDndHtml5Backend = require('react-dnd-html5-backend');
 
-var _uniq = require('lodash/uniq');
+var _reactDndHtml5Backend2 = _interopRequireDefault(_reactDndHtml5Backend);
 
-var _uniq2 = _interopRequireDefault(_uniq);
+var _lodash = require('lodash');
 
 var _Suggestions = require('./Suggestions');
 
@@ -34,8 +34,6 @@ var _constants = require('./constants');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -53,49 +51,13 @@ var ReactTags = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (ReactTags.__proto__ || Object.getPrototypeOf(ReactTags)).call(this, props));
 
-    _this.addTag = function (tag) {
+    _this.getTagItems = function () {
       var _this$props = _this.props,
           tags = _this$props.tags,
-          labelField = _this$props.labelField;
-
-      if (!tag.id || !tag[labelField]) {
-        return;
-      }
-      var existingKeys = tags.map(function (tag) {
-        return tag.id.toLowerCase();
-      });
-      // Return if tag has been already added
-      if (existingKeys.indexOf(tag.id.toLowerCase()) >= 0) {
-        return;
-      }
-      if (_this.props.autocomplete) {
-        var possibleMatches = _this.filteredSuggestions(tag[labelField], _this.props.suggestions);
-
-        if (_this.props.autocomplete === 1 && possibleMatches.length === 1 || _this.props.autocomplete === true && possibleMatches.length) {
-          tag = possibleMatches[0];
-        }
-      }
-
-      // call method to add
-      _this.props.handleAddition(tag);
-
-      // reset the state
-      _this.setState({
-        query: '',
-        selectionMode: false,
-        selectedIndex: -1
-      });
-
-      _this.resetAndFocusInput();
-    };
-
-    _this.getTagItems = function () {
-      var _this$props2 = _this.props,
-          tags = _this$props2.tags,
-          labelField = _this$props2.labelField,
-          removeComponent = _this$props2.removeComponent,
-          readOnly = _this$props2.readOnly,
-          handleDrag = _this$props2.handleDrag;
+          labelField = _this$props.labelField,
+          removeComponent = _this$props.removeComponent,
+          readOnly = _this$props.readOnly,
+          handleDrag = _this$props.handleDrag;
       var classNames = _this.state.classNames;
 
       var moveTag = handleDrag ? _this.moveTag : null;
@@ -136,11 +98,20 @@ var ReactTags = function (_Component) {
   }
 
   _createClass(ReactTags, [{
-    key: 'UNSAFE_componentWillMount',
-    value: function UNSAFE_componentWillMount() {
+    key: 'componentWillMount',
+    value: function componentWillMount() {
       this.setState({
         classNames: _extends({}, _constants.DEFAULT_CLASSNAMES, this.props.classNames)
       });
+    }
+  }, {
+    key: 'resetAndFocusInput',
+    value: function resetAndFocusInput() {
+      this.setState({ query: '' });
+      if (this.textInput) {
+        this.textInput.value = '';
+        this.textInput.focus();
+      }
     }
   }, {
     key: 'componentDidMount',
@@ -154,35 +125,24 @@ var ReactTags = function (_Component) {
       }
     }
   }, {
-    key: 'UNSAFE_componentWillReceiveProps',
-    value: function UNSAFE_componentWillReceiveProps(props) {
-      var suggestions = this.filteredSuggestions(this.state.query, props.suggestions);
-      this.setState({
-        suggestions: suggestions,
-        classNames: _extends({}, _constants.DEFAULT_CLASSNAMES, props.classNames)
-      });
-    }
-  }, {
     key: 'filteredSuggestions',
     value: function filteredSuggestions(query, suggestions) {
-      var _this2 = this;
-
       if (this.props.handleFilterSuggestions) {
         return this.props.handleFilterSuggestions(query, suggestions);
       }
 
       return suggestions.filter(function (item) {
-        return item[_this2.props.labelField].toLowerCase().indexOf(query.toLowerCase()) === 0;
+        return item.text.toLowerCase().indexOf(query.toLowerCase()) === 0;
       });
     }
   }, {
-    key: 'resetAndFocusInput',
-    value: function resetAndFocusInput() {
-      this.setState({ query: '' });
-      if (this.textInput) {
-        this.textInput.value = '';
-        this.textInput.focus();
-      }
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(props) {
+      var suggestions = this.filteredSuggestions(this.state.query, props.suggestions);
+      this.setState({
+        suggestions: suggestions,
+        classNames: _extends({}, _constants.DEFAULT_CLASSNAMES, props.classNames)
+      });
     }
   }, {
     key: 'handleDelete',
@@ -276,7 +236,7 @@ var ReactTags = function (_Component) {
           e.preventDefault();
         }
 
-        var selectedQuery = selectionMode && selectedIndex !== -1 ? suggestions[selectedIndex] : _defineProperty({ id: query }, this.props.labelField, query);
+        var selectedQuery = selectionMode && selectedIndex !== -1 ? suggestions[selectedIndex] : { id: query, text: query };
 
         if (selectedQuery !== '') {
           this.addTag(selectedQuery);
@@ -309,7 +269,7 @@ var ReactTags = function (_Component) {
   }, {
     key: 'handlePaste',
     value: function handlePaste(e) {
-      var _this3 = this;
+      var _this2 = this;
 
       if (!this.props.allowAdditionFromPaste) {
         return;
@@ -325,18 +285,53 @@ var ReactTags = function (_Component) {
       var tags = pastedText.split(delimiterRegExp);
 
       // Only add unique tags
-      (0, _uniq2.default)(tags).forEach(function (tag) {
-        return _this3.addTag(_defineProperty({ id: tag }, _this3.props.labelField, tag));
+      (0, _lodash.uniq)(tags).forEach(function (tag) {
+        return _this2.addTag({ id: tag, text: tag });
       });
     }
   }, {
+    key: 'addTag',
+    value: function addTag(tag) {
+      if (!tag.id && !tag.text) {
+        return;
+      }
+      var tags = this.props.tags;
+
+      var existingKeys = tags.map(function (tag) {
+        return tag.id.toLowerCase();
+      });
+      // Return if tag has been already added
+      if (existingKeys.indexOf(tag.id.toLowerCase()) >= 0) {
+        return;
+      }
+      if (this.props.autocomplete) {
+        var possibleMatches = this.filteredSuggestions(tag, this.props.suggestions);
+
+        if (this.props.autocomplete === 1 && possibleMatches.length === 1 || this.props.autocomplete === true && possibleMatches.length) {
+          tag = possibleMatches[0];
+        }
+      }
+
+      // call method to add
+      this.props.handleAddition(tag);
+
+      // reset the state
+      this.setState({
+        query: '',
+        selectionMode: false,
+        selectedIndex: -1
+      });
+
+      this.resetAndFocusInput();
+    }
+  }, {
     key: 'handleSuggestionClick',
-    value: function handleSuggestionClick(i) {
+    value: function handleSuggestionClick(i, e) {
       this.addTag(this.state.suggestions[i]);
     }
   }, {
     key: 'handleSuggestionHover',
-    value: function handleSuggestionHover(i) {
+    value: function handleSuggestionHover(i, e) {
       this.setState({
         selectedIndex: i,
         selectionMode: true
@@ -357,7 +352,7 @@ var ReactTags = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this3 = this;
 
       var tagItems = this.getTagItems();
 
@@ -375,7 +370,7 @@ var ReactTags = function (_Component) {
         { className: this.state.classNames.tagInput },
         _react2.default.createElement('input', {
           ref: function ref(input) {
-            _this4.textInput = input;
+            _this3.textInput = input;
           },
           className: this.state.classNames.tagInputField,
           type: 'text',
@@ -394,7 +389,6 @@ var ReactTags = function (_Component) {
         _react2.default.createElement(_Suggestions2.default, {
           query: query,
           suggestions: suggestions,
-          labelField: this.props.labelField,
           selectedIndex: selectedIndex,
           handleClick: this.handleSuggestionClick,
           handleHover: this.handleSuggestionHover,
@@ -426,7 +420,8 @@ ReactTags.propTypes = {
   placeholder: _propTypes2.default.string,
   labelField: _propTypes2.default.string,
   suggestions: _propTypes2.default.arrayOf(_propTypes2.default.shape({
-    id: _propTypes2.default.string.isRequired
+    id: _propTypes2.default.string.isRequired,
+    text: _propTypes2.default.string.isRequired
   })),
   delimiters: _propTypes2.default.arrayOf(_propTypes2.default.number),
   autofocus: _propTypes2.default.bool,
@@ -453,27 +448,29 @@ ReactTags.propTypes = {
   maxLength: _propTypes2.default.string,
   inputValue: _propTypes2.default.string,
   tags: _propTypes2.default.arrayOf(_propTypes2.default.shape({
-    id: _propTypes2.default.string.isRequired
+    id: _propTypes2.default.string.isRequired,
+    text: _propTypes2.default.any.isRequired
   }))
 };
 ReactTags.defaultProps = {
   placeholder: _constants.DEFAULT_PLACEHOLDER,
-  labelField: _constants.DEFAULT_LABEL_FIELD,
   suggestions: [],
   delimiters: [_constants.KEYS.ENTER, _constants.KEYS.TAB],
   autofocus: true,
   inline: true,
-  handleDelete: _noop2.default,
-  handleAddition: _noop2.default,
+  handleDelete: _lodash.noop,
+  handleAddition: _lodash.noop,
   allowDeleteFromEmptyInput: true,
   allowAdditionFromPaste: true,
   resetInputOnDelete: true,
+  minQueryLength: 2,
   autocomplete: false,
   readOnly: false
 };
 
 
 module.exports = {
+  WithContext: (0, _reactDnd.DragDropContext)(_reactDndHtml5Backend2.default)(ReactTags),
   WithOutContext: ReactTags,
   KEYS: _constants.KEYS
 };

@@ -8,6 +8,7 @@ plugins:
 exclude_patterns:
   - "dist/"
   - "dist-modules/"
+  - "test/"
   - "**/node_modules/"
   - "**/vendor/"
   - "**/docs/"

@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -13,10 +11,6 @@ var _react2 = _interopRequireDefault(_react);
 var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _RemoveComponent = require('./RemoveComponent');
-
-var _RemoveComponent2 = _interopRequireDefault(_RemoveComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26,44 +20,63 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ItemTypes = { TAG: 'tag' };
-
-var Tag = function (_Component) {
-  _inherits(Tag, _Component);
-
-  function Tag() {
-    _classCallCheck(this, Tag);
-
-    return _possibleConstructorReturn(this, (Tag.__proto__ || Object.getPrototypeOf(Tag)).apply(this, arguments));
+function RemoveComponent(props) {
+  if (props.readOnly) {
+    return _react2.default.createElement('span', null);
   }
 
-  _createClass(Tag, [{
-    key: 'render',
-    value: function render() {
-      var props = this.props;
+  if (props.removeComponent) {
+    var _Component = props.removeComponent;
+    return _react2.default.createElement(_Component, props);
+  }
+
+  return _react2.default.createElement(
+    'a',
+    { onClick: props.onClick, className: props.className },
+    String.fromCharCode(215)
+  );
+}
+
+var Tag = function (_Component2) {
+  _inherits(Tag, _Component2);
+
+  function Tag() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, Tag);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Tag.__proto__ || Object.getPrototypeOf(Tag)).call.apply(_ref, [this].concat(args))), _this), _this.render = function () {
+      var _this2 = _this,
+          props = _this2.props;
 
       var label = props.tag[props.labelField];
-      var readOnly = props.readOnly;
+      var readOnly = props.readOnly,
+          CustomRemoveComponent = props.CustomRemoveComponent;
 
 
       var tagComponent = _react2.default.createElement(
         'span',
         {
           className: props.classNames.tag,
-          onClick: props.onTagClicked,
-          onKeyDown: props.onTagClicked },
+          onClick: props.onTagClicked },
         label,
-        _react2.default.createElement(_RemoveComponent2.default, {
+        _react2.default.createElement(RemoveComponent, {
           tag: props.tag,
           className: props.classNames.remove,
           removeComponent: props.removeComponent,
           onClick: props.onDelete,
-          readOnly: readOnly
+          readOnly: props.readOnly
         })
       );
       return tagComponent;
-    }
-  }]);
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
 
   return Tag;
 }(_react.Component);

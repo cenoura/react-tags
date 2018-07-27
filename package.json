@@ -21,9 +21,9 @@
     "react-component",
     "autosuggest"
   ],
-  "author": "Prakhar Srivastav",
+  "author": "Wharley Ornelas",
   "license": "MIT",
-  "repository": "https://github.com/prakhar1989/react-tags",
+  "repository": "https://github.com/wharley/react-tags",
   "jest": {
     "setupFiles": [
       "raf/polyfill",

@@ -76,10 +76,7 @@ Tag.propTypes = {
   removeComponent: _propTypes2.default.func,
   onTagClicked: _propTypes2.default.func,
   classNames: _propTypes2.default.object,
-  readOnly: _propTypes2.default.bool,
-  connectDragSource: _propTypes2.default.func.isRequired,
-  isDragging: _propTypes2.default.bool.isRequired,
-  connectDropTarget: _propTypes2.default.func.isRequired
+  readOnly: _propTypes2.default.bool
 };
 
 Tag.defaultProps = {

@@ -1,42 +1,20 @@
-React-Tags
+React Tag Custom
 ===
 
-[![MIT](https://img.shields.io/npm/l/react-tag-input.svg?style=flat-square)](https://github.com/prakhar1989/react-tags/blob/master/LICENSE)
-[![NPM Version](https://img.shields.io/npm/v/react-tag-input.svg?style=flat-square)](https://www.npmjs.com/package/react-tag-input)
-[![npm downloads](https://img.shields.io/npm/dm/react-tag-input.svg?style=flat-square)](https://www.npmjs.com/package/react-tag-input)
-[![build status](https://img.shields.io/travis/prakhar1989/react-tags.svg?style=flat-square)](https://travis-ci.org/prakhar1989/react-tags)
-[![Greenkeeper badge](https://badges.greenkeeper.io/prakhar1989/react-tags.svg)](https://greenkeeper.io/)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![MIT](https://img.shields.io/npm/l/react-tag-input.svg?style=flat-square)](https://github.com/wharley/react-tags/blob/master/LICENSE)
+[![NPM Version](https://img.shields.io/npm/v/react-tag-input.svg?style=flat-square)](https://www.npmjs.com/package/react-tag-custom)
+[![npm downloads](https://img.shields.io/npm/dm/react-tag-input.svg?style=flat-square)]
 
-<a href="https://codeclimate.com/github/prakhar1989/react-tags/maintainability"><img src="https://api.codeclimate.com/v1/badges/b9edb2810b02bb845d20/maintainability" /></a>
-<a href="https://codeclimate.com/github/prakhar1989/react-tags/test_coverage"><img src="https://api.codeclimate.com/v1/badges/b9edb2810b02bb845d20/test_coverage" /></a>
+React Tag Custom is a simple tagging component ready to drop in your React projects. Orininally based on The [React Tags project](http://prakhar.me/react-tags/example) by Prakhar Srivastav this version removes the drag-and-drop functionality.
 
-React-tags is a simple tagging component ready to drop in your React projects. The component is inspired by GMail's *To* field in the compose window.
-
-### [Looking for Maintainers](https://github.com/prakhar1989/react-tags/issues/197)
-Interested in working on this library as an owner and working with the community to add more features? Let me [know!](https://github.com/prakhar1989/react-tags/issues/197)
-
-### Features
-- Autocomplete based on a suggestion list
-- Keyboard friendly and mouse support
-- Reorder tags using drag and drop
-
-### Why
-Because I was looking for an excuse to build a standalone component and publish it in the wild? To be honest, I needed a tagging component that provided the above features for my [React-Surveyman](http://github.com/prakhar1989/react-surveyman) project. Since I was unable to find one which met my requirements (and the fact that I generally enjoy re-inventing the wheel) this is what I came up with.
-
-
-### Demo
-![img](demo.gif)
-
-Check it out [here](https://stackblitz.com/edit/react-tag-input-1nelrc)
+![Screenshot of React Tag custom](react-tag-custom.gif)
 
 ### Installation
 The preferred way of using the component is via NPM
 
 ```
-npm install --save react-tag-input
+npm install --save react-tag-custom
 ```
-It is, however, also available to be used separately (`dist/ReactTags.min.js`). If you prefer this method remember to include [ReactDND](https://github.com/gaearon/react-dnd) as a dependancy. Refer to the [example](https://stackblitz.com/edit/react-tag-input) to see how this works.
 
 ### Usage
 
@@ -46,7 +24,7 @@ Here's a sample implementation that initializes the component with a list of ini
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { WithContext as ReactTags } from 'react-tag-input';
+import { WithContext as ReactTags } from 'react-tag-custom';
 
 const KeyCodes = {
   comma: 188,
@@ -89,17 +67,6 @@ class App extends React.Component {
         this.setState(state => ({ tags: [...state.tags, tag] }));
     }
 
-    handleDrag(tag, currPos, newPos) {
-        const tags = [...this.state.tags];
-        const newTags = tags.slice();
-
-        newTags.splice(currPos, 1);
-        newTags.splice(newPos, 0, tag);
-
-        // re-render
-        this.setState({ tags: newTags });
-    }
-
     render() {
         const { tags, suggestions } = this.state;
         return (
@@ -108,7 +75,6 @@ class App extends React.Component {
                     suggestions={suggestions}
                     handleDelete={this.handleDelete}
                     handleAddition={this.handleAddition}
-                    handleDrag={this.handleDrag}
                     delimiters={delimiters} />
             </div>
         )
@@ -117,14 +83,6 @@ class App extends React.Component {
 
 ReactDOM.render(<App />, document.getElementById('app'));
 ```
-
-**A note about `Contexts`**
-One of the dependencies of this component is the [react-dnd](https://github.com/gaearon/react-dnd) library. Since the 1.0 version, the original author has changed the API and requires the application using any draggable components to have a top-level [backend](http://gaearon.github.io/react-dnd/docs-html5-backend.html) context. So if you're using this component in an existing Application that uses React-DND you will already have a backend defined, in which case, you should `require` the component *without* the context.
-
-```javascript
-const ReactTags = require('react-tag-input').WithOutContext;
-```
-Otherwise, you can simply import along with the backend itself (as shown above). If you have ideas to make this API better, I'd [love to hear](https://github.com/prakhar1989/react-tags/issues/new).
 
 <a name="Options"></a>
 ### Options
@@ -136,7 +94,6 @@ Otherwise, you can simply import along with the backend itself (as shown above).
 - [`labelField`](#labelFieldOption)
 - [`handleAddition`](#handleAdditionOption)
 - [`handleDelete`](#handleDeleteOption)
-- [`handleDrag`](#handleDragOption)
 - [`handleFilterSuggestions`](#handleFilterSuggestions)
 - [`handleTagClick`](#handleTagClickOption)
 - [`autofocus`](#autofocus)
@@ -233,17 +190,6 @@ function(i) {
 }
 ```
 
-<a name="handleDragOption"></a>
-##### handleDrag (optional)
-If you want tags to be draggable, you need to provide this function.
-Function called when the user drags a tag.
-
-```js
-function(tag, currPos, newPos) {
-    // remove tag from currPos and add in newPos
-}
-```
-
 <a name="handleFilterSuggestions"></a>
 ##### handleFilterSuggestions (optional)
 To assert control over the suggestions filter, you may contribute a function that is executed whenever a filtered set
@@ -337,7 +283,7 @@ How many characters are needed for suggestions to appear (default: 2).
 If you'd like to supply your own tag delete/remove element, create a React component and pass it as a property to ReactTags using the `removeComponent` option. By default, a simple anchor link with an "x" text node as its only child is rendered, but if you'd like to, say, replace this with a `<button>` element that uses an image instead of text, your markup may look something like this:
 
 ```javascript
-import {WithContext as ReactTags} from 'react-tag-input'
+import {WithContext as ReactTags} from 'react-tag-custom
 
 class Foo extends React.Component {
    render() {
@@ -461,7 +407,7 @@ The component is written in ES6 and uses [Webpack](http://webpack.github.io/) as
 #### Set up instructions
 
 ```
-git clone git@github.com:prakhar1989/react-tags.git
+git clone git@github.com:wharley/react-tags.git
 cd react-tags
 npm install
 npm run precommit
@@ -471,12 +417,4 @@ npm run start
 ### Contributing
 Got ideas on how to make this better? Open an issue!
 
-
-### Thanks
-The autocomplete dropdown is inspired by Lea Verou's [awesomeplete](https://github.com/LeaVerou/awesomplete) library. The Drag and drop functionality is provided by Dan Abramov's insanely useful [ReactDND](https://github.com/gaearon/react-dnd) library.
-
-Also thanks to the awesome contributors who've made the library far better!
-
-
-[default-suggestions-filter-logic]: https://github.com/prakhar1989/react-tags/blob/v4.0.1/lib/ReactTags.js#L83
 [includes-polyfill]: https://github.com/mathiasbynens/String.prototype.includes

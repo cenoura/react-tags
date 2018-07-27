@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { expect } from 'chai';
-import { DragDropContext } from 'react-dnd';
-import TestBackend from 'react-dnd-test-backend';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import TestUtils from 'react-dom/test-utils';
@@ -18,7 +16,7 @@ function wrapInTestContext(DecoratedComponent) {
       return <DecoratedComponent {...this.props} />;
     }
   }
-  return DragDropContext(TestBackend)(DecoratedComponentWrapper);
+  return DecoratedComponentWrapper;
 }
 
 function mockItem(overrides) {
@@ -108,12 +106,10 @@ describe('Tag', () => {
     backend.simulateBeginDrag([
       tag.getDecoratedComponentInstance().getHandlerId(),
     ]);
-    expect(tag.getDecoratedComponentInstance().state.isDragging).to.be.true;
     const el = TestUtils.findRenderedDOMComponentWithTag(root, 'span');
     expect(el.style.opacity).to.equal('0');
     backend.simulateEndDrag();
     expect(el.style.opacity).to.equal('1');
-    expect(tag.getDecoratedComponentInstance().state.isDragging).to.be.false;
   });
 
   test('should not be draggable if readOnly is true', () => {
@@ -123,6 +119,5 @@ describe('Tag', () => {
     backend.simulateBeginDrag([
       tag.getDecoratedComponentInstance().getHandlerId(),
     ]);
-    expect(tag.getDecoratedComponentInstance().state.isDragging).to.be.false;
   });
 });

@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 import { spy } from 'sinon';
 import noop from 'lodash/noop';
 
-import { WithContext as ReactTags } from '../lib/ReactTags';
+import { WithOutContext as ReactTags } from '../lib/ReactTags';
 
 import {
   KEYS,

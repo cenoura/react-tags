@@ -232,7 +232,7 @@ const delimiters = [KeyCodes.comma, KeyCodes.enter];
  * The example below uses the `WithContext` since this the sole component
  * using the react-dnd component.
 */
-const Tags = ReactTags.WithContext;
+const Tags = ReactTags.WithOutContext;
 
 class App extends React.Component {
   constructor(props) {

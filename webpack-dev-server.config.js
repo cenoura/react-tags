@@ -1,9 +1,9 @@
 const webpack = require("webpack");
 const path = require("path");
 const buildPath = path.resolve(__dirname, "dist");
+const nodeModulesPath = path.resolve(__dirname, "node_modules");
 
 const config = {
-  mode: 'development',
   // Entry points to the project
   entry: [
     "webpack/hot/only-dev-server",
@@ -36,13 +36,11 @@ const config = {
     new webpack.NoEmitOnErrorsPlugin(),
   ],
   module: {
-    rules: [
+    loaders: [
       {
         test: /\.js$/, // All .js files
-        use: [{ // react-hot is like browser sync and babel loads jsx and es6-7
-          loader: 'babel-loader',
-        }],
-        exclude: /node_modules/,
+        loaders: ["babel-loader"],
+        exclude: [nodeModulesPath],
       },
     ],
   },

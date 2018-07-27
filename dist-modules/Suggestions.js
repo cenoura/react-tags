@@ -61,18 +61,15 @@ var Suggestions = function (_Component) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Suggestions.__proto__ || Object.getPrototypeOf(Suggestions)).call.apply(_ref, [this].concat(args))), _this), _this.markIt = function (input, query) {
       var escapedRegex = query.trim().replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
-      var labelValue = input[_this.props.labelField];
-
-
       return {
-        __html: labelValue.replace(RegExp(escapedRegex, 'gi'), '<mark>$&</mark>')
+        __html: input.text.replace(RegExp(escapedRegex, 'gi'), '<mark>$&</mark>')
       };
     }, _this.shouldRenderSuggestions = function (query) {
-      var _this$props = _this.props,
-          minQueryLength = _this$props.minQueryLength,
-          isFocused = _this$props.isFocused;
+      var _this2 = _this,
+          props = _this2.props;
 
-      return query.length >= minQueryLength && isFocused;
+      var minQueryLength = _number2.default.isInteger(props.minQueryLength) ? props.minQueryLength : 2;
+      return query.length >= minQueryLength && props.isFocused;
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -82,7 +79,7 @@ var Suggestions = function (_Component) {
       var props = this.props;
 
       var shouldRenderSuggestions = props.shouldRenderSuggestions || this.shouldRenderSuggestions;
-      return props.isFocused !== nextProps.isFocused || !(0, _isEqual2.default)(props.suggestions, nextProps.suggestions) || shouldRenderSuggestions(nextProps.query) || shouldRenderSuggestions(nextProps.query) !== shouldRenderSuggestions(props.query);
+      return props.isFocused !== nextProps.isFocused || !(0, _isEqual2.default)(props.suggestions, nextProps.suggestions) || shouldRenderSuggestions(nextProps.query) || shouldRenderSuggestions(nextProps.query) != shouldRenderSuggestions(props.query);
     }
   }, {
     key: 'componentDidUpdate',
@@ -103,7 +100,7 @@ var Suggestions = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var props = this.props;
 
@@ -114,7 +111,7 @@ var Suggestions = function (_Component) {
             key: i,
             onMouseDown: props.handleClick.bind(null, i),
             onMouseOver: props.handleHover.bind(null, i),
-            className: i === props.selectedIndex ? props.classNames.activeSuggestion : '' },
+            className: i == props.selectedIndex ? props.classNames.activeSuggestion : '' },
           _react2.default.createElement('span', { dangerouslySetInnerHTML: this.markIt(item, props.query) })
         );
       }.bind(this));
@@ -129,7 +126,7 @@ var Suggestions = function (_Component) {
         'div',
         {
           ref: function ref(elem) {
-            _this2.suggestionsContainer = elem;
+            _this3.suggestionsContainer = elem;
           },
           className: this.props.classNames.suggestions },
         _react2.default.createElement(
@@ -155,10 +152,6 @@ Suggestions.propTypes = {
   minQueryLength: _propTypes2.default.number,
   shouldRenderSuggestions: _propTypes2.default.func,
   isFocused: _propTypes2.default.bool.isRequired,
-  classNames: _propTypes2.default.object,
-  labelField: _propTypes2.default.string.isRequired
-};
-Suggestions.defaultProps = {
-  minQueryLength: 2
+  classNames: _propTypes2.default.object
 };
 exports.default = Suggestions;

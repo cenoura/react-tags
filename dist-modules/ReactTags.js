@@ -8,13 +8,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDnd = require('react-dnd');
+var _noop = require('lodash/noop');
 
-var _reactDndHtml5Backend = require('react-dnd-html5-backend');
+var _noop2 = _interopRequireDefault(_noop);
 
-var _reactDndHtml5Backend2 = _interopRequireDefault(_reactDndHtml5Backend);
+var _uniq = require('lodash/uniq');
 
-var _lodash = require('lodash');
+var _uniq2 = _interopRequireDefault(_uniq);
 
 var _Suggestions = require('./Suggestions');
 
@@ -285,7 +285,7 @@ var ReactTags = function (_Component) {
       var tags = pastedText.split(delimiterRegExp);
 
       // Only add unique tags
-      (0, _lodash.uniq)(tags).forEach(function (tag) {
+      (0, _uniq2.default)(tags).forEach(function (tag) {
         return _this2.addTag({ id: tag, text: tag });
       });
     }
@@ -458,8 +458,8 @@ ReactTags.defaultProps = {
   delimiters: [_constants.KEYS.ENTER, _constants.KEYS.TAB],
   autofocus: true,
   inline: true,
-  handleDelete: _lodash.noop,
-  handleAddition: _lodash.noop,
+  handleDelete: _noop2.default,
+  handleAddition: _noop2.default,
   allowDeleteFromEmptyInput: true,
   allowAdditionFromPaste: true,
   resetInputOnDelete: true,
@@ -470,7 +470,7 @@ ReactTags.defaultProps = {
 
 
 module.exports = {
-  WithContext: (0, _reactDnd.DragDropContext)(_reactDndHtml5Backend2.default)(ReactTags),
+  WithContext: ReactTags,
   WithOutContext: ReactTags,
   KEYS: _constants.KEYS
 };
